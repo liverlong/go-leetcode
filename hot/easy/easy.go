@@ -15,3 +15,14 @@ func invertTree(root *common.TreeNode) *common.TreeNode {
 	root.Right = left
 	return root
 }
+
+// 汉明距离
+func hammingDistance(x int, y int) int {
+	n := x ^ y
+	count := 0
+	for n != 0 {
+		n &= n - 1 // clear lowest set bit
+		count++
+	}
+	return count
+}
