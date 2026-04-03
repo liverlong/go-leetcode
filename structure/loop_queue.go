@@ -11,7 +11,7 @@ type LoopQueue[T any] struct {
 
 func NewLoopQueue[T any](capacity int) *LoopQueue[T] {
 	return &LoopQueue[T]{
-		elements: make([]T, 0, capacity+1),
+		elements: make([]T, capacity+1),
 		front:    0,
 		tail:     0,
 		size:     0,
@@ -27,11 +27,11 @@ func (q *LoopQueue[T]) GetCapacity() int {
 }
 
 func (q *LoopQueue[T]) Enqueue(val T) {
-	if (q.tail+1)%q.GetCapacity() == q.front {
+	if (q.tail+1)%len(q.elements) == q.front {
 		q.resize(q.GetCapacity() * 2)
 	}
 	q.elements[q.tail] = val
-	q.tail = (q.tail + 1) % q.GetCapacity()
+	q.tail = (q.tail + 1) % len(q.elements)
 	q.size++
 }
 
@@ -64,9 +64,9 @@ func (q *LoopQueue[T]) GetFront() (T, error) {
 }
 
 func (q *LoopQueue[T]) resize(newCapacity int) {
-	newData := make([]T, 0, newCapacity+1)
+	newData := make([]T, newCapacity+1)
 	for i := 0; i < q.size; i++ {
-		newData[i] = q.elements[(i+q.front)%q.GetCapacity()]
+		newData[i] = q.elements[(i+q.front)%len(q.elements)]
 	}
 	q.elements = newData
 	q.front = 0
