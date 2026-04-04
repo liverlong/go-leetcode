@@ -34,3 +34,31 @@ func isValid(s string) bool {
 
 	return len(res) == 0
 }
+
+// 206 反转链表
+func reverseList(head *ListNode) *ListNode {
+
+	var pre *ListNode
+	cur := head
+	for cur != nil {
+		next := cur.Next
+
+		// reverse
+		cur.Next = pre
+		pre = cur
+		cur = next
+	}
+	return pre
+}
+
+func reverseList2(head *ListNode) *ListNode {
+
+	if head == nil || head.Next == nil {
+		return head
+	}
+	rev := reverseList2(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+
+	return rev
+}
