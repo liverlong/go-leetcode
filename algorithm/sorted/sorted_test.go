@@ -8,7 +8,7 @@ import (
 func TestSort(t *testing.T) {
 	arr := []int{6, 4, 12, 7, 19, 2, 13, 56, 5}
 
-	QuickSort(arr)
+	HeapSort(arr)
 
 	fmt.Println(arr)
 }

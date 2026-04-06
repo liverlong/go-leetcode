@@ -1,9 +1,14 @@
-package tree
+package structure
 
 import (
 	"errors"
 	"fmt"
 )
+
+type treeNode struct {
+	val         int
+	left, right *treeNode
+}
 
 type BinarySearchTree struct {
 	root *treeNode
