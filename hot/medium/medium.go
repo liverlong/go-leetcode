@@ -19,3 +19,36 @@ func productExceptSelf(nums []int) []int {
 	}
 	return res
 }
+
+// 102 二叉树的层序遍历
+func levelOrder(root *TreeNode) [][]int {
+	if root == nil {
+		return [][]int(nil)
+	}
+
+	q := make([]*TreeNode, 0)
+
+	q = append(q, root)
+
+	res := make([][]int, 0)
+
+	for len(q) != 0 {
+		sz := len(q)
+		tmp := make([]int, 0)
+		for i := 0; i < sz; i++ {
+			cur := q[0]
+			q = q[1:]
+			tmp = append(tmp, cur.Val)
+			if cur.Left != nil {
+				q = append(q, cur.Left)
+			}
+			if cur.Right != nil {
+				q = append(q, cur.Right)
+			}
+		}
+		res = append(res, tmp)
+	}
+
+	return res
+
+}
