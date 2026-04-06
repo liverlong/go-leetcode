@@ -239,5 +239,48 @@ func partition3ways(arr []int, l, r int) (int, int) {
 	lt++
 
 	return lt - 1, gt
+}
 
+func HeapSort(arr []int) {
+	if len(arr) <= 1 {
+		return
+	}
+
+	// 整理成一个最大堆
+	heapify(arr)
+
+	for i := len(arr) - 1; i >= 0; i-- {
+		arr[0], arr[i] = arr[i], arr[0]
+		siftDown(arr, 0, i)
+	}
+
+}
+
+func heapify(arr []int) {
+	if len(arr) <= 1 {
+		return
+	}
+	for i := (len(arr) - 2) / 2; i >= 0; i-- {
+		siftDown(arr, i, len(arr))
+	}
+}
+
+// 对[0, n) 中对索引为idx的进行siftDown
+func siftDown(arr []int, idx, n int) {
+	//leftIdx, rightIdx := 2* idx + 1, 2* idx + 2
+	for 2*idx+1 < n {
+		maxIndex := 2*idx + 1
+		if maxIndex+1 < n && arr[maxIndex+1] > arr[maxIndex] {
+			maxIndex++
+		}
+
+		if arr[idx] >= arr[maxIndex] {
+			break
+		}
+
+		// 交换数据
+		arr[idx], arr[maxIndex] = arr[maxIndex], arr[idx]
+		// idx为最大的这个元素
+		idx = maxIndex
+	}
 }
