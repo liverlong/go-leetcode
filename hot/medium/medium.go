@@ -1,5 +1,7 @@
 package medium
 
+import "math"
+
 // 除了自身以外数组的乘积
 func productExceptSelf(nums []int) []int {
 	res := make([]int, len(nums))
@@ -51,4 +53,34 @@ func levelOrder(root *TreeNode) [][]int {
 
 	return res
 
+}
+
+// 验证二叉搜索树
+func isValidBST(root *TreeNode) bool {
+
+	// 中序遍历
+
+	pre := math.MinInt
+
+	var dfs func(root *TreeNode) bool
+
+	dfs = func(root *TreeNode) bool {
+		if root == nil {
+			return true
+		}
+
+		if !dfs(root.Left) {
+			return false
+		}
+
+		if root.Val < pre {
+			return false
+		}
+
+		pre = root.Val
+
+		return dfs(root.Right)
+	}
+
+	return dfs(root)
 }
