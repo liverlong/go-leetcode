@@ -85,6 +85,7 @@ func isValidBST(root *TreeNode) bool {
 	return dfs(root)
 }
 
+// 46 全排列
 func permute(nums []int) [][]int {
 	res := make([][]int, 0)
 
@@ -120,4 +121,42 @@ func permute(nums []int) [][]int {
 	backtrace(nums, used, []int{}, &res)
 
 	return res
+}
+
+// 22 括号生存
+func generateParenthesis(n int) []string {
+	res := new([]string)
+	if n <= 0 {
+		return *res
+	}
+
+	var dfs func(left, right int, track string, res *[]string)
+
+	dfs = func(left, right int, track string, res *[]string) {
+		if left > right {
+			return
+		}
+
+		if left < 0 || right < 0 {
+			return
+		}
+
+		if left == 0 && right == 0 {
+			*res = append(*res, track)
+			return
+		}
+
+		// 加入左括号
+		track += "("
+		dfs(left-1, right, track, res)
+		track = track[:len(track)-1]
+
+		// 加入右括号
+		track += ")"
+		dfs(left, right-1, track, res)
+		track = track[:len(track)-1]
+	}
+
+	dfs(n, n, "", res)
+	return *res
 }

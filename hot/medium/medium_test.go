@@ -14,3 +14,7 @@ func TestPermute(t *testing.T) {
 		fmt.Println(data)
 	}
 }
+
+func TestGenerateParenthesis(t *testing.T) {
+	fmt.Println(generateParenthesis(3))
+}
