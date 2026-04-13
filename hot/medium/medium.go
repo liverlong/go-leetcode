@@ -87,17 +87,22 @@ func isValidBST(root *TreeNode) bool {
 
 // 46 全排列
 func permute(nums []int) [][]int {
+	if len(nums) == 0 {
+		return [][]int{}
+	}
 	res := make([][]int, 0)
 
+	// 状态变量
 	used := make([]bool, len(nums))
+	tmp := make([]int, 0, len(nums))
 
-	var backtrace func(nums []int, used []bool, tmp []int, res *[][]int)
+	var backtrace func()
 
-	backtrace = func(nums []int, used []bool, tmp []int, res *[][]int) {
+	backtrace = func() {
 		if len(nums) == len(tmp) {
 			t := make([]int, len(tmp))
 			copy(t, tmp)
-			*res = append(*res, t)
+			res = append(res, t)
 			return
 		}
 
@@ -110,7 +115,7 @@ func permute(nums []int) [][]int {
 			used[i] = true
 
 			// 回溯
-			backtrace(nums, used, tmp, res)
+			backtrace()
 
 			// 撤销选择
 			tmp = tmp[:len(tmp)-1]
@@ -118,69 +123,101 @@ func permute(nums []int) [][]int {
 		}
 	}
 
-	backtrace(nums, used, []int{}, &res)
+	backtrace()
 
 	return res
 }
 
 // 22 括号生存
 func generateParenthesis(n int) []string {
-	res := new([]string)
+	var res []string
 	if n <= 0 {
-		return *res
+		return res
 	}
 
-	var dfs func(left, right int, track string, res *[]string)
+	track := make([]byte, 0, 2*n)
 
-	dfs = func(left, right int, track string, res *[]string) {
+	var dfs func(left, right int)
+
+	dfs = func(left, right int) {
+		// 终止条件
+		if left == 0 && right == 0 {
+			res = append(res, string(track))
+			return
+		}
+
+		// 剪枝
 		if left > right {
 			return
 		}
 
-		if left < 0 || right < 0 {
-			return
+		// 尝试添加左括号
+		if left > 0 {
+			track = append(track, '(')
+			dfs(left-1, right)
+			track = track[:len(track)-1]
 		}
 
-		if left == 0 && right == 0 {
-			*res = append(*res, track)
-			return
+		// 尝试添加右括号
+		if right > 0 {
+			track = append(track, ')')
+			dfs(left, right-1)
+			track = track[:len(track)-1]
 		}
 
-		// 加入左括号
-		track += "("
-		dfs(left-1, right, track, res)
-		track = track[:len(track)-1]
-
-		// 加入右括号
-		track += ")"
-		dfs(left, right-1, track, res)
-		track = track[:len(track)-1]
 	}
 
-	dfs(n, n, "", res)
-	return *res
+	dfs(n, n)
+	return res
 }
 
 // 78 子集
 func subsets(nums []int) [][]int {
 	res := make([][]int, 0)
+	var tmp []int
 
-	var backtrace func(start int, nums []int, tmp []int, res *[][]int)
+	var backtrace func(start int)
 
-	backtrace = func(start int, nums []int, tmp []int, res *[][]int) {
+	backtrace = func(start int) {
+		// 当前路径加入到结果集
 		t := make([]int, len(tmp))
 		copy(t, tmp)
-		*res = append(*res, t)
+		res = append(res, t)
 
+		// 从start遍历，避免回头选重复的数据
 		for i := start; i < len(nums); i++ {
 
+			// 做选择
 			tmp = append(tmp, nums[i])
-			backtrace(i+1, nums, tmp, res)
+			// 下一层不选当前的数
+			backtrace(i + 1)
+			// 撤销选择（回溯）
 			tmp = tmp[:len(tmp)-1]
 		}
 	}
 
-	backtrace(0, nums, []int{}, &res)
+	backtrace(0)
 
 	return res
+}
+
+// 48 旋转图像
+func rotate(matrix [][]int) {
+	n := len(matrix)
+
+	// 1. 转置矩阵
+	for i := 0; i < n; i++ {
+		for j := i + 1; j < n; j++ {
+			// 交换对角线两侧的元素
+			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+		}
+	}
+
+	// 2. 镜像翻转每一行
+	for i := 0; i < n; i++ {
+		for j := 0; j < n/2; j++ {
+			// 交换行内的首尾元素
+			matrix[i][j], matrix[i][n-1-j] = matrix[i][n-1-j], matrix[i][j]
+		}
+	}
 }
