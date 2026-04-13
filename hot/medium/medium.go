@@ -160,3 +160,27 @@ func generateParenthesis(n int) []string {
 	dfs(n, n, "", res)
 	return *res
 }
+
+// 78 子集
+func subsets(nums []int) [][]int {
+	res := make([][]int, 0)
+
+	var backtrace func(start int, nums []int, tmp []int, res *[][]int)
+
+	backtrace = func(start int, nums []int, tmp []int, res *[][]int) {
+		t := make([]int, len(tmp))
+		copy(t, tmp)
+		*res = append(*res, t)
+
+		for i := start; i < len(nums); i++ {
+
+			tmp = append(tmp, nums[i])
+			backtrace(i+1, nums, tmp, res)
+			tmp = tmp[:len(tmp)-1]
+		}
+	}
+
+	backtrace(0, nums, []int{}, &res)
+
+	return res
+}
