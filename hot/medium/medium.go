@@ -269,3 +269,49 @@ func reconstructQueue(people [][]int) [][]int {
 	}
 	return res
 }
+
+// 114 二叉树展开为链表
+func flatten(root *TreeNode) {
+
+	//var pre *TreeNode
+	//var order func(root *TreeNode)
+	//
+	//order = func(root *TreeNode) {
+	//	if root == nil {
+	//		return
+	//	}
+	//
+	//	order(root.Right)
+	//	order(root.Left)
+	//
+	//	root.Right = pre
+	//	root.Left = nil
+	//	pre = root
+	//}
+	//
+	//order(root)
+
+	for root != nil {
+		if root.Left == nil {
+			root = root.Right
+		} else {
+
+			// 寻找左子树的最右边节点
+			pre := root.Left
+			for pre.Right != nil {
+				pre = pre.Right
+			}
+
+			// 原来的右子树接到左子树最右边
+			pre.Right = root.Right
+			// 左子树插入到右子树的地方
+			root.Right = root.Left
+			// 左子树置为空
+			root.Left = nil
+
+			// 考虑下一个节点
+			root = root.Right
+		}
+	}
+
+}
