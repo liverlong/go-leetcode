@@ -1,6 +1,9 @@
 package medium
 
-import "math"
+import (
+	"math"
+	"sort"
+)
 
 // 除了自身以外数组的乘积
 func productExceptSelf(nums []int) []int {
@@ -245,4 +248,24 @@ func convertBST(root *TreeNode) *TreeNode {
 
 	return order(root)
 
+}
+
+// 406 根据身高重建队列
+func reconstructQueue(people [][]int) [][]int {
+	sort.Slice(people, func(i, j int) bool {
+		a, b := people[i], people[j]
+		return a[0] > b[0] || a[0] == b[0] && a[1] < b[1]
+	})
+
+	res := make([][]int, 0)
+
+	for _, person := range people {
+		idx := person[1]
+		if len(res) <= idx { // 小于长度的直接加在末尾
+			res = append(res, person)
+		} else { // 插入到people[i]处
+			res = append(res[:idx], append([][]int{person}, res[idx:]...)...)
+		}
+	}
+	return res
 }
