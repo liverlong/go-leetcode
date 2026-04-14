@@ -221,3 +221,28 @@ func rotate(matrix [][]int) {
 		}
 	}
 }
+
+// 538 把二叉搜索树转换为累加树
+func convertBST(root *TreeNode) *TreeNode {
+	pre := 0
+
+	var order func(root *TreeNode) *TreeNode
+
+	order = func(root *TreeNode) *TreeNode {
+		if root == nil {
+			return nil
+		}
+
+		root.Right = order(root.Right)
+		root.Val += pre
+		pre = root.Val
+
+		root.Left = order(root.Left)
+
+		return root
+
+	}
+
+	return order(root)
+
+}
