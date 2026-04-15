@@ -368,3 +368,36 @@ func combinationSum(candidates []int, target int) [][]int {
 
 	return res
 }
+
+// 105 前序与中序遍历二叉树
+func buildTree(preorder []int, inorder []int) *TreeNode {
+
+	memory := make(map[int]int)
+	for i := 0; i < len(inorder); i++ {
+		memory[inorder[i]] = i
+	}
+
+	pre := 0
+	var buildTree func(left, right int) *TreeNode
+
+	buildTree = func(left, right int) *TreeNode {
+		if left > right {
+			return nil
+		}
+
+		val := preorder[pre]
+		cur := &TreeNode{Val: val}
+
+		idx := memory[val]
+
+		pre++
+
+		cur.Left = buildTree(left, idx-1)
+		cur.Right = buildTree(idx+1, right)
+
+		return cur
+
+	}
+
+	return buildTree(0, len(preorder)-1)
+}
