@@ -315,3 +315,56 @@ func flatten(root *TreeNode) {
 	}
 
 }
+
+// 236. 二叉树的最近公共祖先
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	if root == nil || root == p || root == q {
+		return root
+	}
+
+	left := lowestCommonAncestor(root.Left, p, q)
+	right := lowestCommonAncestor(root.Right, p, q)
+
+	if left != nil && right != nil {
+		return root
+	}
+
+	if left != nil {
+		return left
+	}
+
+	return right
+
+}
+
+// 39 组合总数
+func combinationSum(candidates []int, target int) [][]int {
+	res := make([][]int, 0)
+	path := make([]int, 0)
+
+	var backtrack func(nums []int, index, target int)
+
+	backtrack = func(nums []int, index, target int) {
+		if target < 0 {
+			return
+		}
+
+		if target == 0 {
+			t := make([]int, len(path))
+			copy(t, path)
+			res = append(res, t)
+		}
+
+		for i := index; i < len(nums); i++ {
+			path = append(path, nums[i])
+
+			backtrack(nums, i, target-nums[i])
+
+			path = path[:len(path)-1]
+		}
+	}
+
+	backtrack(candidates, 0, target)
+
+	return res
+}
