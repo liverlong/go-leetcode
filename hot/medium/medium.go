@@ -408,6 +408,7 @@ func minDistance(word1 string, word2 string) int {
 	//
 	//var dp func(word1 string, m int, word2 string, n int) int
 	//
+	//// word1[0,m] 变为word2[0,n]
 	//dp = func(word1 string, m int, word2 string, n int) int {
 	//	if m == -1 {
 	//		return n + 1
@@ -421,7 +422,10 @@ func minDistance(word1 string, word2 string) int {
 	//		return dp(word1, m-1, word2, n-1)
 	//	}
 	//
-	//	return min(dp(word1, m-1, word2, n-1), dp(word1, m-1, word2, n), dp(word1, m, word2, n-1)) + 1
+	//	return min(
+	//		dp(word1, m-1, word2, n-1),   // word1[m] 换成word2[n] 两个指针都前移
+	//		dp(word1, m-1, word2, n),     // word1[m] 删除  word1前移
+	//		dp(word1, m, word2, n-1)) + 1 // word1[m]后面插入一个word[n]一样的  word2被匹配了前移
 	//
 	//}
 	//

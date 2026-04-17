@@ -16,5 +16,5 @@ func TestPermute(t *testing.T) {
 }
 
 func TestGenerateParenthesis(t *testing.T) {
-	fmt.Println(generateParenthesis(3))
+	fmt.Println(1 ^ 3 ^ 3 ^ 4)
 }

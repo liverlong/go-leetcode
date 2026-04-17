@@ -1,9 +1,7 @@
 package easy
 
-import "go-lc/common"
-
 // 反转二叉树
-func invertTree(root *common.TreeNode) *common.TreeNode {
+func invertTree(root *TreeNode) *TreeNode {
 	if root == nil {
 		return nil
 	}
@@ -25,4 +23,81 @@ func hammingDistance(x int, y int) int {
 		count++
 	}
 	return count
+}
+
+// 1 两数之和
+func twoSum(nums []int, target int) []int {
+	memo := make(map[int]int)
+	r := make([]int, 2)
+	for i := 0; i < len(nums); i++ {
+		if res, ok := memo[target-nums[i]]; ok {
+			r[0], r[1] = res, i
+			break
+		} else {
+			memo[nums[i]] = i
+		}
+	}
+
+	return r
+}
+
+// 94. 二叉树的中序遍历
+func inorderTraversal(root *TreeNode) []int {
+	res := make([]int, 0)
+
+	var dfs func(root *TreeNode)
+
+	dfs = func(root *TreeNode) {
+		if root == nil {
+			return
+		}
+		dfs(root.Left)
+		res = append(res, root.Val)
+		dfs(root.Right)
+
+	}
+
+	dfs(root)
+
+	return res
+}
+
+// 136. 只出现一次的数字
+func singleNumber(nums []int) int {
+	res := 0
+
+	for _, num := range nums {
+		res ^= num
+	}
+
+	return res
+}
+
+// 104. 二叉树的最大深度
+func maxDepth(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	return max(maxDepth(root.Left), maxDepth(root.Right)) + 1
+
+}
+
+// 70. 爬楼梯
+func climbStairs(n int) int {
+	if n <= 2 {
+		return n
+	}
+	//
+	//return climbStairs(n-1) + climbStairs(n-2)
+
+	first, second := 0, 1
+
+	res := 0
+	for i := 1; i < n+1; i++ {
+		res = first + second
+		first, second = second, res
+	}
+
+	return res
 }
