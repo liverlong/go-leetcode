@@ -117,3 +117,41 @@ func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
 
 	return root1
 }
+
+// 20 有效的括号
+func isValid(s string) bool {
+	if len(s)%2 != 0 {
+		return false
+	}
+
+	stack := make([]rune, 0)
+
+	for _, val := range s {
+		if val == '{' || val == '[' || val == '(' {
+			stack = append(stack, val)
+		} else {
+			if len(stack) == 0 {
+				return false
+			}
+
+			c := stack[len(stack)-1]
+
+			if val == '}' && c != '{' {
+				return false
+			}
+
+			if val == ']' && c != '[' {
+				return false
+			}
+
+			if val == ')' && c != '(' {
+				return false
+			}
+
+			stack = stack[:len(stack)-1]
+
+		}
+	}
+
+	return len(stack) == 0
+}
