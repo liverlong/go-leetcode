@@ -155,3 +155,22 @@ func isValid(s string) bool {
 
 	return len(stack) == 0
 }
+
+// 206. 反转链表
+func reverseList(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+
+	cur := head
+	var pre *ListNode
+
+	for cur != nil {
+		next := cur.Next
+		cur.Next = pre
+		pre = cur
+		cur = next
+	}
+
+	return pre
+}
