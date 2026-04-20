@@ -190,3 +190,22 @@ func countBits(n int) []int {
 
 	return res
 }
+
+// 101. 对称二叉树（深度优先搜索，清晰图解）
+func isSymmetric(root *TreeNode) bool {
+	var recur func(left, right *TreeNode) bool
+
+	recur = func(left, right *TreeNode) bool {
+		if left == nil && right == nil {
+			return true
+		}
+
+		if left == nil || right == nil || left.Val != right.Val {
+			return false
+		}
+
+		return recur(left.Left, right.Right) && recur(left.Right, right.Left)
+	}
+
+	return root == nil || recur(root.Left, root.Right)
+}
