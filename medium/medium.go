@@ -59,3 +59,19 @@ func minFallingPathSum(matrix [][]int) int {
 
 	return minRes
 }
+
+// 122. 买卖股票的最佳时机 II
+func maxProfit(prices []int) int {
+	if len(prices) <= 0 {
+		return 0
+	}
+
+	dp_i_0, dp_i_1 := 0, math.MinInt
+
+	for i := 0; i < len(prices); i++ {
+		dp_i_0 = max(dp_i_0, dp_i_1 + prices[i])
+		dp_i_1 = max(dp_i_1, dp_i_0 - prices[i])
+	}
+
+	return dp_i_0
+}
