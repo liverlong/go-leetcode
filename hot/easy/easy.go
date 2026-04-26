@@ -241,3 +241,20 @@ func maxProfit(prices []int) int {
 
 	return dp_i_0
 }
+
+// 448. 找到所有数组中消失的数字
+func findDisappearedNumbers(nums []int) []int {
+	n := len(nums)
+	for i := 0; i < n; i++ {
+		nums[(nums[i]-1)%n] += n
+	}
+
+	res := make([]int, 0)
+	for i := 0; i < n; i++ {
+		if nums[i] <= n {
+			res = append(res, i+1)
+		}
+	}
+
+	return res
+}
