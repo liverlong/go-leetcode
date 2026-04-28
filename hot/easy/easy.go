@@ -272,3 +272,19 @@ func moveZeroes(nums []int) {
 		nums[slow] = 0
 	}
 }
+
+// 169. 多数元素
+func majorityElement(nums []int) int {
+	candidate, count := 0, 0
+	for _, num := range nums {
+		if count == 0 {
+			candidate = num
+		}
+		if num == candidate {
+			count++
+		} else {
+			count--
+		}
+	}
+	return candidate
+}
