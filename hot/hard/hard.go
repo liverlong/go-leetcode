@@ -33,3 +33,51 @@ func isMatch(s string, p string) bool {
 
 	return dp[m][n]
 }
+
+// 85. 最大矩形
+func maximalRectangle(matrix [][]byte) int {
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return 0
+	}
+
+	rows, cols := len(matrix), len(matrix[0])
+	heights := make([]int, cols)
+	maxArea := 0
+
+	for i := 0; i < rows; i++ {
+		// 更新当前行的高度（柱状图）
+		for j := 0; j < cols; j++ {
+			if matrix[i][j] == '1' {
+				heights[j]++
+			} else {
+				heights[j] = 0
+			}
+		}
+
+		// 单调栈计算当前柱状图的最大矩形面积
+		stack := make([]int, 0, cols)
+		for j := 0; j <= cols; j++ {
+			var h int
+			if j < cols {
+				h = heights[j]
+			}
+			// 当遇到更矮的柱子时，以栈顶高度为高的矩形结束
+			for len(stack) > 0 && h < heights[stack[len(stack)-1]] {
+				height := heights[stack[len(stack)-1]]
+				stack = stack[:len(stack)-1]
+				left := -1
+				if len(stack) > 0 {
+					left = stack[len(stack)-1]
+				}
+				width := j - left - 1
+				area := height * width
+				if area > maxArea {
+					maxArea = area
+				}
+			}
+			stack = append(stack, j)
+		}
+	}
+
+	return maxArea
+}
