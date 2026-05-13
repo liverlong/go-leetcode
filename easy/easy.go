@@ -62,3 +62,21 @@ func reverseList2(head *ListNode) *ListNode {
 
 	return rev
 }
+
+// 13. 罗马数字转整数
+func romanToInt(s string) int {
+	roman := map[byte]int{
+		'I': 1, 'V': 5, 'X': 10, 'L': 50,
+		'C': 100, 'D': 500, 'M': 1000,
+	}
+	n := len(s)
+	res := roman[s[n-1]]          // 1. 先取最后一个字符的值
+	for i := n - 2; i >= 0; i-- { // 2. 从倒数第二个开始向左遍历
+		if roman[s[i]] < roman[s[i+1]] {
+			res -= roman[s[i]] // 3. 当前值 < 右边值 → 减法
+		} else {
+			res += roman[s[i]] // 4. 否则 → 加法
+		}
+	}
+	return res
+}
